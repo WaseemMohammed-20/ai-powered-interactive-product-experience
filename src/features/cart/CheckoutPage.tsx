@@ -29,7 +29,7 @@ function CheckoutPage() {
 
   if (isOrderPlaced) {
     return (
-      <section className="page-container empty-cart">
+      <section className="page-container empty-cart checkout-page order-success">
         <CheckCircle size={48} />
         <p className="page-eyebrow">ORDER CONFIRMED</p>
         <h1>Order Successful</h1>
@@ -37,7 +37,7 @@ function CheckoutPage() {
         <p className="product-price">${orderTotal.toFixed(2)}</p>
         <button
           type="button"
-          className="primary-button"
+          className="primary-button magnetic"
           onClick={() => navigate("/experience")}
         >
           Continue Shopping
@@ -48,12 +48,12 @@ function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <section className="page-container empty-cart">
+      <section className="page-container empty-cart checkout-page">
         <ShoppingBag size={48} />
         <p className="page-eyebrow">CHECKOUT</p>
         <h1>Your cart is empty</h1>
         <p>Add a product before continuing to checkout.</p>
-        <Link to="/experience" className="secondary-button">
+        <Link to="/experience" className="secondary-button magnetic">
           <ArrowLeft size={18} />
           Continue Shopping
         </Link>
@@ -62,16 +62,16 @@ function CheckoutPage() {
   }
 
   return (
-    <section className="page-container">
+    <section className="page-container checkout-page">
       <p className="page-eyebrow">CHECKOUT</p>
       <h1>Complete Your Experience</h1>
 
       <div className="cart-layout">
-        <div className="cart-items">
-          <div className="feature-card">
+        <div className="cart-items checkout-summary">
+          <div className="feature-card checkout-summary-card">
             <p className="summary-label">ORDER SUMMARY</p>
             {items.map((item) => (
-              <article className="cart-item" key={item.id}>
+              <article className="cart-item cart-item--premium" key={item.id}>
                 <div
                   className="cart-item-color"
                   style={{ backgroundColor: item.color }}
@@ -95,7 +95,11 @@ function CheckoutPage() {
           </div>
         </div>
 
-        <form className="feature-card" onSubmit={handleSubmit} noValidate>
+        <form
+          className="feature-card checkout-form"
+          onSubmit={handleSubmit}
+          noValidate
+        >
           <p className="summary-label">CUSTOMER INFORMATION</p>
           <label>
             Full Name
@@ -110,7 +114,7 @@ function CheckoutPage() {
             <textarea name="shippingAddress" required rows={4} />
           </label>
           {formError && <p role="alert">{formError}</p>}
-          <button type="submit" className="add-cart-button">
+          <button type="submit" className="add-cart-button magnetic">
             Place Order
           </button>
         </form>

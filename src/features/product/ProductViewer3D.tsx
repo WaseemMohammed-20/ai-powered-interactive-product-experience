@@ -137,17 +137,17 @@ export default function ProductViewer3D({
           intensity={2}
         />
 
-        {/* Purple product lighting */}
+        {/* Neutral product lighting */}
         <pointLight
           position={[3, 2, 4]}
           intensity={2.5}
-          color="#8f7dff"
+          color="#ffffff"
         />
 
         <pointLight
           position={[-3, -2, 2]}
           intensity={1.5}
-          color="#6d5dfc"
+          color="#a1a1a1"
         />
 
         <Suspense fallback={null}>

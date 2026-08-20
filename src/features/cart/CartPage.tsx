@@ -26,7 +26,7 @@ function CartPage() {
 
   if (items.length === 0) {
     return (
-      <section className="cart-page">
+      <section className="cart-page cart-page--premium">
         <div className="empty-cart">
           <ShoppingBag size={48} />
 
@@ -47,9 +47,9 @@ function CartPage() {
   }
 
   return (
-    <section className="cart-page">
+    <section className="cart-page cart-page--premium">
       <div className="cart-container">
-        <div className="cart-header">
+        <div className="cart-header cart-header--editorial">
           <div>
             <p className="cart-label">YOUR BAG</p>
 
@@ -68,10 +68,10 @@ function CartPage() {
         </div>
 
         <div className="cart-layout">
-          <div className="cart-items">
+          <div className="cart-items cart-items--premium">
             {items.map((item) => (
               <article
-                className="cart-item"
+                className="cart-item cart-item--premium"
                 key={item.id}
               >
                 <div
@@ -132,7 +132,7 @@ function CartPage() {
             ))}
           </div>
 
-          <aside className="cart-summary">
+          <aside className="cart-summary cart-summary--premium">
             <p className="summary-label">
               ORDER SUMMARY
             </p>
@@ -171,7 +171,7 @@ function CartPage() {
 
             <Link
               to="/checkout"
-              className="checkout-button"
+              className="checkout-button magnetic"
             >
               Proceed to Checkout
             </Link>

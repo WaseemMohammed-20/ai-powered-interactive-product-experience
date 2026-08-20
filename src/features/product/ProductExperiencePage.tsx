@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { MouseEvent } from "react";
 import {
   Minus,
   Plus,
@@ -48,6 +49,10 @@ function ProductExperiencePage() {
     useState(0);
   const [isNotificationVisible, setIsNotificationVisible] =
     useState(false);
+  const [stageOffset, setStageOffset] = useState({
+    x: 0,
+    y: 0,
+  });
 
   useEffect(() => {
     analyticsStore.track("product_viewed");
@@ -94,6 +99,22 @@ function ProductExperiencePage() {
     setNotificationVersion((currentVersion) => currentVersion + 1);
   };
 
+  const handleStageMouseMove = (
+    event: MouseEvent<HTMLDivElement>
+  ) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const offsetX =
+      ((event.clientX - bounds.left) / bounds.width - 0.5) * 12;
+    const offsetY =
+      ((event.clientY - bounds.top) / bounds.height - 0.5) * 12;
+
+    setStageOffset({ x: offsetX, y: offsetY });
+  };
+
+  const handleStageMouseLeave = () => {
+    setStageOffset({ x: 0, y: 0 });
+  };
+
   return (
     <main className="experience-page">
       {isNotificationVisible && (
@@ -111,8 +132,17 @@ function ProductExperiencePage() {
 
         {/* LEFT SIDE - PRODUCT VIEWER */}
 
-        <div className="product-stage">
-          <div className="stage-background" />
+        <div
+          className="product-stage"
+          onMouseMove={handleStageMouseMove}
+          onMouseLeave={handleStageMouseLeave}
+        >
+          <div
+            className="stage-background"
+            style={{
+              transform: `translate3d(${stageOffset.x}px, ${stageOffset.y}px, 0)`,
+            }}
+          />
 
           <ProductViewer3D
             color={selectedColor.value}
@@ -131,20 +161,20 @@ function ProductExperiencePage() {
 
         {/* RIGHT SIDE - PRODUCT INFORMATION */}
 
-        <div className="product-info">
-          <p className="product-label">
+        <div className="product-info reveal">
+          <p className="product-label reveal-item">
             NEXA SERIES 01
           </p>
 
-          <h1>{product.name}</h1>
+          <h1 className="reveal-item">{product.name}</h1>
 
-          <h2>{product.tagline}</h2>
+          <h2 className="reveal-item">{product.tagline}</h2>
 
-          <p className="product-description">
+          <p className="product-description reveal-item">
             {product.description}
           </p>
 
-          <div className="product-price">
+          <div className="product-price reveal-item">
             ${product.price}
           </div>
 
@@ -225,7 +255,7 @@ function ProductExperiencePage() {
 
           <button
             type="button"
-            className="add-cart-button"
+            className="add-cart-button magnetic"
             onClick={handleAddToCart}
           >
             Add {quantity} to Cart — $
@@ -237,7 +267,7 @@ function ProductExperiencePage() {
       {/* FEATURES */}
 
       <section className="feature-section">
-        <div className="section-heading">
+        <div className="section-heading reveal">
           <p>DESIGNED FOR THE FUTURE</p>
 
           <h2>
@@ -249,7 +279,7 @@ function ProductExperiencePage() {
 
         <div className="feature-grid">
 
-          <article className="feature-card">
+          <article className="feature-card reveal">
             <Sparkles size={28} />
 
             <h3>Smart Interaction</h3>
@@ -261,7 +291,7 @@ function ProductExperiencePage() {
             </p>
           </article>
 
-          <article className="feature-card">
+          <article className="feature-card reveal">
             <Sparkles size={28} />
 
             <h3>Premium Design</h3>
@@ -273,7 +303,7 @@ function ProductExperiencePage() {
             </p>
           </article>
 
-          <article className="feature-card">
+          <article className="feature-card reveal">
             <Sparkles size={28} />
 
             <h3>Adaptive Performance</h3>
@@ -285,7 +315,7 @@ function ProductExperiencePage() {
             </p>
           </article>
 
-          <article className="feature-card">
+          <article className="feature-card reveal">
             <Sparkles size={28} />
 
             <h3>Always Connected</h3>
