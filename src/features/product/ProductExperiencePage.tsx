@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Minus,
   Plus,
@@ -8,6 +8,7 @@ import {
 
 import ProductViewer3D from "./ProductViewer3D";
 import { cartStore } from "../../stores/cartStore";
+import { analyticsStore } from "../../services/analytics/analyticsStore";
 
 type ProductColor = {
   name: string;
@@ -43,18 +44,45 @@ function ProductExperiencePage() {
     useState<ProductColor>(product.colors[0]);
 
   const [quantity, setQuantity] = useState(1);
+  const [notificationVersion, setNotificationVersion] =
+    useState(0);
+  const [isNotificationVisible, setIsNotificationVisible] =
+    useState(false);
+
+  useEffect(() => {
+    analyticsStore.track("product_viewed");
+  }, []);
+
+  useEffect(() => {
+    if (notificationVersion === 0) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setIsNotificationVisible(false);
+    }, 3000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [notificationVersion]);
 
   const handleIncrease = () => {
+    analyticsStore.track("quantity_changed");
     setQuantity((currentQuantity) => currentQuantity + 1);
   };
 
   const handleDecrease = () => {
+    if (quantity <= 1) {
+      return;
+    }
+
+    analyticsStore.track("quantity_changed");
     setQuantity((currentQuantity) =>
       Math.max(1, currentQuantity - 1)
     );
   };
 
   const handleAddToCart = () => {
+    analyticsStore.track("product_added_to_cart");
     cartStore.addItem({
       id: `${product.id}-${selectedColor.value}`,
       name: product.name,
@@ -62,10 +90,23 @@ function ProductExperiencePage() {
       quantity: quantity,
       color: selectedColor.value,
     });
+    setIsNotificationVisible(true);
+    setNotificationVersion((currentVersion) => currentVersion + 1);
   };
 
   return (
     <main className="experience-page">
+      {isNotificationVisible && (
+        <div
+          className="cart-notification"
+          role="status"
+          aria-live="polite"
+        >
+          <Check size={18} strokeWidth={3} />
+          <span>NEXA Pulse X1 added to your cart</span>
+        </div>
+      )}
+
       <section className="experience-grid">
 
         {/* LEFT SIDE - PRODUCT VIEWER */}
@@ -132,7 +173,10 @@ function ProductExperiencePage() {
                     backgroundColor: color.value,
                   }}
                   onClick={() =>
-                    setSelectedColor(color)
+                    (() => {
+                      analyticsStore.track("color_selected");
+                      setSelectedColor(color);
+                    })()
                   }
                   aria-label={`Select ${color.name}`}
                 >

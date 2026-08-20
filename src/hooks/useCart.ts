@@ -39,5 +39,7 @@ export function useCart() {
 
     removeItem: (id: string) =>
       cartStore.removeItem(id),
+
+    clearCart: () => cartStore.clearCart(),
   };
 }

@@ -80,6 +80,12 @@ class CartStore {
 
     this.notify();
   }
+
+  clearCart() {
+    this.items = [];
+
+    this.notify();
+  }
 }
 
 export const cartStore = new CartStore();

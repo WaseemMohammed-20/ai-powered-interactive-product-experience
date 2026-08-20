@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -7,8 +8,13 @@ import {
   Trash2,
 } from "lucide-react";
 import { useCart } from "../../hooks/useCart";
+import { analyticsStore } from "../../services/analytics/analyticsStore";
 
 function CartPage() {
+  useEffect(() => {
+    analyticsStore.track("cart_opened");
+  }, []);
+
   const {
     items,
     totalItems,
