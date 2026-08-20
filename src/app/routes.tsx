@@ -7,6 +7,10 @@ import CartPage from "../features/cart/CartPage";
 import CheckoutPage from "../features/cart/CheckoutPage";
 import AnalyticsPage from "../features/analytics/AnalyticsPage";
 import AboutPage from "../features/product/AboutPage";
+import ProductUniversePage from "../features/product/ProductUniversePage";
+import PhonePlaceholderPage from "../features/product/PhonePlaceholderPage";
+import ProductPlaceholderPage from "../features/product/ProductPlaceholderPage";
+import HeadphonesPage from "../features/product/HeadphonesPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +24,26 @@ export const router = createBrowserRouter([
       {
         path: "experience",
         element: <ProductExperiencePage />,
+      },
+      {
+        path: "products",
+        element: <ProductUniversePage />,
+      },
+      {
+        path: "products/phone",
+        element: <PhonePlaceholderPage />,
+      },
+      {
+        path: "products/headphones",
+        element: <HeadphonesPage />,
+      },
+      {
+        path: "products/air",
+        element: <ProductPlaceholderPage />,
+      },
+      {
+        path: "products/book",
+        element: <ProductPlaceholderPage />,
       },
       {
         path: "cart",
